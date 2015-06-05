@@ -33,25 +33,27 @@ namespace src{
 //-------------------------------------------------------------------------------------  
 class IPmuCommands{
   public:
-    virtual void pmuOpen();
-    virtual void pmuClose();
-    virtual void pmuNoDuMu();
-    virtual void pmuDu();
-    virtual void pmuMu();
+    virtual void pmuOpen(void);
+    virtual void pmuClose(void);
+    virtual void pmuNoDuMu(void);
+    virtual void pmuDu(void);
+    virtual void pmuMu(void);
 };
 
 
 //-------------------------------------------------------------------------------------  
-//  Интерфейс передачи команд с ПДУ
+//  Интерфейс передачи команд с ПДУ (Remote Control)
 //-------------------------------------------------------------------------------------  
-class IPduCommands{
+class IRcCommands{
   public:
-    virtual void pduPlus();
-    virtual void pduMinus();
-    virtual void pduEnter();
-    virtual void pduClear();
-    virtual void pduOpen();
-    virtual void pduClose();
+    virtual inline void rcClear(void) {}
+    virtual inline void rcOpen(void)  {}
+    virtual inline void rcClose(void) {}
+    virtual inline void rcPlus(void)  {}
+    virtual inline void rcDown(void)  {}
+    virtual inline void rcRight(void) {}
+    virtual inline void rcMinus(void) {}
+    virtual inline void rcEnter(void) {}
 };
 
 
@@ -96,25 +98,18 @@ class IMbCommands{
 //-------------------------------------------------------------------------------------  
 //  Интерфейс передачи команд суммарный
 //-------------------------------------------------------------------------------------  
-class IControlCommands : public IPmuCommands,
-                         public IPduCommands,
-                         public IDinCommands,
+class IControlCommands : //public IPmuCommands,
+                         public IRcCommands
+                         /*public IDinCommands,
                          public IAinCommands,
-                         public IMbCommands {
+                         public IMbCommands*/ {
   public:
-    virtual void pduPlus() {}
-    virtual void pduMinus() {}
-    virtual void pduEnter() {}
-    virtual void pduClear() {}
-    virtual void pduOpen() {}
-    virtual void pduClose() {}
-
-    virtual void pmuOpen() {}
-    virtual void pmuClose() {}
-    virtual void pmuNoDuMu() {}
-    virtual void pmuDu() {}
-    virtual void pmuMu() {}
-
+    virtual inline void rcPlus(void)  {}
+    virtual inline void rcMinus(void) {}
+    virtual inline void rcEnter(void) {}
+    virtual inline void rcClear(void) {}
+    virtual inline void rcOpen(void)  {}
+    virtual inline void rcClose(void) {}
 };
 
 } //src

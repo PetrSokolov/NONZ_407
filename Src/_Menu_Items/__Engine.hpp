@@ -16,7 +16,11 @@
 #include <vector>
 #include <map>
 
+#include "__DisplayLedDecoder.hpp"
 #include "..\_Interfaces\__IMenuItem.hpp"
+#include "..\_Interfaces\__IDisplayed.hpp"
+#include "..\_Interfaces\__IControlCommands.hpp"
+
 
 #ifdef __cplusplus
  extern "C" {
@@ -32,12 +36,27 @@ namespace src{
   //  Осуществляет навингацию по объектам IMenuItem
   //  Агрегирует объект, содержащий карты параметров. (Потом убрать)
   //===========================================================================================
-  class MenuEngine{
+  class MenuEngine : public IControlCommands, public IDisplayed{
 	public:
     // Конструктор без параметров
     MenuEngine()  {}
-  
-    // Методы работы с элементами меню
+
+    //  Методы интерфейса IControlCommands
+    virtual inline void rcPlus(void)  { printf("MenuEngine PLUS PDU handler\n"); }
+    virtual inline void rcMinus(void) { printf("MenuEngine MINUS PDU handler\n"); }
+    virtual inline void rcEnter(void) { printf("MenuEngine ENTER PDU handler\n"); }
+    virtual inline void rcClear(void) { printf("MenuEngine CLEAR PDU handler\n");}
+    virtual inline void rcOpen(void)  { printf("MenuEngine OPEN PDU handler\n"); }
+    virtual inline void rcClose(void) { printf("MenuEngine CLOSE PDU handler\n"); }
+    virtual inline void rcDown(void)  { printf("MenuEngine DOWN PDU handler\n"); }
+    virtual inline void rcRight(void) { printf("MenuEngine RIGHT PDU handler\n"); }
+
+    //  Методы интерфейса IDisplayed
+    void display (void);
+    void displayOff (void);
+
+    //  Методы класса
+    //  Методы работы с элементами меню
     void          putItem   (IMenuItem* menuItem);     // Положить в карту меню элемент
     void          findAvailableElements(vector<IMenuItem*> &resultVector, char* indexString);// Производит поиск доступных элементов меню на данном уровне меню
     void          findAvailableElements(char* indexString);                                  // Производит поиск доступных элементов меню на данном уровне меню
@@ -56,10 +75,12 @@ namespace src{
            void     menuMoveBackward (void);
 
 	protected:
-    vector<IMenuItem*>  _availableElements;           // Список доступных элементов меню. На текущем уровне.
-    vector<IMenuItem*>  _menuIdVector;                // Вектор, содержащий все элементы меню
-		char*               _m;	                          // Текущее состояние (уровень) меню
-		uint16_t            _im;                   	      // Индекс листига текущего меню
+    vector<IMenuItem*>  _availableElements;           //  Список доступных элементов меню. На текущем уровне.
+    vector<IMenuItem*>  _menuIdVector;                //  Вектор, содержащий все элементы меню
+		char*               _m;	                          //  Текущее состояние (уровень) меню
+		uint16_t            _im;                   	      //  Индекс листига текущего меню
+    LedDecoder          _ledDecoder;                  //  Декодер в семисегментный индиктор
+    uint8_t             _digit;                       //  Номер отображаемого символа
 };
 
 }	// namespace src

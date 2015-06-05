@@ -145,7 +145,7 @@ void DMA2_Stream4_IRQHandler(void)
   /* USER CODE BEGIN DMA2_Stream4_IRQn 0 */
   // Таймер 100 млс
   Timer100mls++;
-  rcDecoder.timerHandler(60);
+  rc.rcDecoder.timerHandler(60);
 
   uDC.putSample(adc3.getBufer()[0]);
   uDC.putSample(adc3.getBufer()[1]);
@@ -194,7 +194,7 @@ void DMA2_Stream3_IRQHandler(void)
 void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-  rcDecoder.putSample();
+  rc.rcDecoder.putSample();
 
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);

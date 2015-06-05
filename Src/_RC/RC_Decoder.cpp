@@ -25,6 +25,7 @@ void RcDecoder::putSample()
       if ( (_inputMessage & 0xF0) == 0xE0 ){
         if(_inputMessage == _inputMessage_1){         //  2 подряд одинаковых сообщения (защита от помехи)
           _message = _inputMessage;
+          rc.setCommand ( _message & 0x0F );
         }
       }
       else { _message =0; }                //  Принято не правильное сообщение

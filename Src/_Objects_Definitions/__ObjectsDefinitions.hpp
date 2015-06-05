@@ -6,9 +6,10 @@
 #include "..\_ADC\_ADC.hpp"
 #include "..\_PWM\__PWM.hpp"
 #include "..\_AnalogSensors\__AnalogSensors.hpp"
+#include "..\_Menu_Items\__MainMenu.hpp"
 #include "..\_Menu_Items\__Engine.hpp"
 #include "..\_Menu_Items\__Parameters.hpp"
-#include "..\_RC_DEcoder\__RC_Decoder.hpp"
+#include "..\_RC\__RC.hpp"
 
 
 using namespace src;
@@ -20,19 +21,22 @@ using namespace src;
   //  АЦП1, АЦП3
   extern Adc adc1, adc3;
 
-  // ПДУ
-  extern RcDecoder rcDecoder;
-
   // ШИМ
   extern Pwm2phaseNONZ pwm;
 
    //  Датчик напряжения на шине постоянного тока. Напряжение  и ток на заряжаемой батарее
   extern AnalogRmsSensor uDC, uCharge, iCharge;
 
+   //  Менеджер меню
+  extern MainMenu mainMenu;
+   
   //  Движок меню
   extern MenuEngine menuEngine;
 
-  //  Контейнер настроечных объектов - параметров
+  // ПДУ
+  extern Rc rc;
+
+   //  Контейнер настроечных объектов - параметров
   extern ContainerOfVariables containerOfVariables;
 
   // Настроечные параметры ШИМ

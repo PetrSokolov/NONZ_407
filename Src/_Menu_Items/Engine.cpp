@@ -8,11 +8,11 @@
 // 	-----|-------------|----------------|----------------------------------------------
 //#####################################################################################
 
-//#include "..\Menu_Items\_Engine.h"
 
-//#include "stm32f10x.h"
+#include "stm32f4xx_hal.h"
 #include "__Engine.hpp"
 #include "__Parameters.hpp"
+#include "..\_Objects_Definitions\__ObjectsDefinitions.hpp"
 
 using namespace src;
 
@@ -165,3 +165,54 @@ void  MenuEngine::menuMoveBackward (void)
 
 }
 
+//========================================================================================================
+//  Реализация интерфейса IDisplayed
+//========================================================================================================
+
+void MenuEngine::display (void)
+{
+  switch(_digit){
+    case 0:{
+  _ledDecoder.decode('A');
+  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
+  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
+  GPIOD->BSRR = _ledDecoder.getAll();
+  GPIOD->BSRR = BIT_8<<16;
+      _digit++;
+      }break;
+    case 1:{
+  _ledDecoder.decode('B');
+  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
+  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
+  GPIOD->BSRR = _ledDecoder.getAll();
+  GPIOD->BSRR = BIT_9<<16;
+      _digit++;
+      }break;
+    case 2:{
+  _ledDecoder.decode('C');
+  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
+  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
+  GPIOD->BSRR = _ledDecoder.getAll();
+  GPIOD->BSRR = BIT_10<<16;
+      _digit++;
+      }break;
+    case 3:{
+  _ledDecoder.decode('D');
+  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
+  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
+  GPIOD->BSRR = _ledDecoder.getAll();
+  GPIOD->BSRR = BIT_12<<16;
+      _digit =0;
+      }break;
+    default:  _digit =0; break;
+
+  
+  }
+    
+
+
+
+  
+  printf("Digit = %d\n", _digit);
+  
+}

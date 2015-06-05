@@ -613,6 +613,11 @@
               <FileType>8</FileType>
               <FilePath>..\Src\_Menu_Items\Parameters.cpp</FilePath>
             </File>
+            <File>
+              <FileName>MainMenu.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_Menu_Items\MainMenu.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -651,12 +656,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>RC Decoder</GroupName>
+          <GroupName>RC</GroupName>
           <Files>
+            <File>
+              <FileName>RC.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_RC\RC.cpp</FilePath>
+            </File>
             <File>
               <FileName>RC_Decoder.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Src\_RC_Decoder\RC_Decoder.cpp</FilePath>
+              <FilePath>..\Src\_RC\RC_Decoder.cpp</FilePath>
             </File>
           </Files>
         </Group>

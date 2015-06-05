@@ -24,19 +24,22 @@ volatile uint16_t Timer100mls=0;
   //  АЦП1, АЦП3
   Adc adc1(5), adc3(3);
   
-  // ПДУ
-  RcDecoder rcDecoder;
-  
   // ШИМ
   Pwm2phaseNONZ pwm;
 
   //  Датчик напряжения на шине постоянного тока. Напряжение  и ток на заряжаемой батарее
   AnalogRmsSensor uDC(60e-6, 0.01), uCharge(60e-6, 0.01), iCharge(20e-6, 0.001);
   
+  //  Менеджер меню
+  MainMenu mainMenu;
+  
   //  Движок меню
   MenuEngine menuEngine;
 
-  //  Контейнер настроечных объектов - параметров
+  // ПДУ
+  Rc rc( &mainMenu );
+
+//  Контейнер настроечных объектов - параметров
   ContainerOfVariables containerOfVariables;
 
 //---------------------------------------------------------------------------------------------------------

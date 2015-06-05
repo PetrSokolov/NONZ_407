@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "stm32f4xx_hal.h"
 #include "__Main_Loop.hpp"
 #include "..\_Objects_Definitions\__ObjectsDefinitions.hpp"
 
@@ -13,17 +14,33 @@ using namespace std;
 
 void MainLoop()
 {
+//------------------------------------------------------------------------------
+  //  Низкоуровневая инициализация
+//------------------------------------------------------------------------------
+  //  Разрешение выходов буферов
+  GPIOC->BSRR = BIT_14;
+//------------------------------------------------------------------------------
+//  Агрегация объектов
+//  Определяется только при инициализации программы
+//------------------------------------------------------------------------------
+  
+  mainMenu.addObserver( &menuEngine );  //  Объект menuEngine подписался на рассылку событий, объявленных в IControlCommands
+ 
+  
+//------------------------------------------------------------------------------
+//  Основной цикл программы
+//------------------------------------------------------------------------------
  while(1){
 //  100 mls --------------------------------------------------------------------
-  if (Timer100mls >16660){
-    menuEngine.setMenuValue("A");
-    menuEngine.findAvailableElements(menuEngine.getMenuValue());                       // Производит поиск доступных элементов меню на данном уровне меню
-//    printf("Vector elements = %d\n", menuEngine.getCountOfElements());
-//    printf("%s elements = %d\n", menuEngine.getMenuValue(), menuEngine.getCountOfAvailableElements());
-//    printf("Variables in container = %d\n", containerOfVariables.getCountOfContents());
-    
+    menuEngine.display();
 
-    printf("RC Message = %d\n", rcDecoder.getMessage());
+   if (Timer100mls >16660){
+//    menuEngine.display();
+    rc.cycleHandler();
+    menuEngine.setMenuValue("A");
+    menuEngine.findAvailableElements(menuEngine.getMenuValue());  // Производит поиск доступных элементов меню на данном уровне меню
+
+    printf("RC Message = %d\n", rc.rcDecoder.getMessage());
 //    printf("uDc = %f\n", uDC.getValue());
     Timer100mls =0;
   }
