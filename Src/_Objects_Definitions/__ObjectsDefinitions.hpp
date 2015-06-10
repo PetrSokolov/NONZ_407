@@ -9,6 +9,7 @@
 #include "..\_Menu_Items\__MainMenu.hpp"
 #include "..\_Menu_Items\__Engine.hpp"
 #include "..\_Menu_Items\__Parameters.hpp"
+#include "..\_Menu_Items\__DisplayLed4Digit.hpp"
 #include "..\_RC\__RC.hpp"
 
 
@@ -27,6 +28,9 @@ using namespace src;
    //  Датчик напряжения на шине постоянного тока. Напряжение  и ток на заряжаемой батарее
   extern AnalogRmsSensor uDC, uCharge, iCharge;
 
+  //  Обработчик отображения на индикаторе. Реализует интерфейс IDisplay
+  extern DisplayLed4Digit displayLed4Digit;
+
    //  Менеджер меню
   extern MainMenu mainMenu;
    
@@ -42,7 +46,7 @@ using namespace src;
   // Настроечные параметры ШИМ
   extern ParameterFlt  pwmDeathTime, pwmValue;
    
-  extern volatile uint16_t Timer100mls;
+  extern volatile uint16_t Timer5mls, Timer100mls, Timer333mls;
    
 #define BIT_0   0x0001
 #define BIT_1   0x0002

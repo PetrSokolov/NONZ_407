@@ -17,7 +17,13 @@
 using namespace src;
 
 
-//MenuEngine menuEngine;
+//  Конструктор
+MenuEngine::MenuEngine(IDisplay* display)
+  {
+    _display = display;
+    _editor.setDisplay(display);
+  }
+
 //--------------------------------------------------------------------------------------------------------
 // Метод PutToMenu
 // Положить указатель на объект в вектор, содержащий все элементы меню
@@ -43,16 +49,26 @@ void MenuEngine::findAvailableElements(vector<IMenuItem*> &resultVector, char* i
   n = _menuIdVector.size();
   lenthIndexString = strlen(indexString);
 
-  for (i=0; i < n; i++){
-    string_found = strstr (_menuIdVector[i]->getMenu(),indexString);
-    if(string_found){  // Символ найден
-      // Если после indexString есть точка, и она является последней, то это элемент текущего меню 
-      first_point = strchr((string_found + lenthIndexString),'.');
-      last_point = strrchr((string_found + lenthIndexString),'.');
-      if( first_point && (first_point == last_point) ){
-        resultVector.push_back(_menuIdVector[i]);
-      }
-    }
+  if (lenthIndexString){
+   for (i=0; i < n; i++){
+     string_found = strstr (_menuIdVector[i]->getMenu(),indexString);
+     if(string_found){  // Символ найден
+       // Если после indexString есть точка, и она является последней, то это элемент текущего меню 
+       first_point = strchr((string_found + lenthIndexString),'.');
+       last_point = strrchr((string_found + lenthIndexString),'.');
+       if( first_point && (first_point == last_point) ){
+         resultVector.push_back(_menuIdVector[i]);
+       }
+     }
+   }
+  }
+  else{  // Длина индекса меню нулевая - выводятся элемены высшего уровня (A,B,C,...)
+   for (i=0; i < n; i++){
+     string_found = strstr (_menuIdVector[i]->getMenu(),".");
+     if(!string_found){  // Символ не найден - элемент высшего уровня меню
+       resultVector.push_back(_menuIdVector[i]);
+     }
+   }
   }
 }
 
@@ -150,9 +166,18 @@ void  MenuEngine::menuMoveUp (void)
 //--------------------------------------------------------------------------------------------------------
 void  MenuEngine::menuMoveForward (void)
 {
+  char str[16];
+  vector<IMenuItem*> menuElements;
   // поиск элементов следующего уровня меню
   // если они есть, то переход.
-  // Присваивание вектору элементов текущего уровня, вектора найденных элементов.
+
+  strncpy(str, (getAvailableElement(getIm()))->getMenu(), sizeof(str)); // В str заносится значение меню, на которй указывает _im
+  
+  findAvailableElements( menuElements, str);  // Поиск элементов меню, являющихся подменю значения str
+  if (menuElements.size()){
+    findAvailableElements(str);
+    setMenuValue(str);
+  }
 }
 
 
@@ -162,57 +187,37 @@ void  MenuEngine::menuMoveForward (void)
 //--------------------------------------------------------------------------------------------------------
 void  MenuEngine::menuMoveBackward (void)
 {
-
+  char str[16];
+  char* ptr;
+  
+  strncpy(str, getMenuValue(), sizeof(str));
+  ptr = strrchr(str, '.');  // Поиск последней точки
+  if (ptr){                 // Отрезание индекса после точки (B.0.1 -> B.0)
+    strcpy(ptr, "");
+  }
+   else{
+    strcpy(str, "");
+   }
+  setMenuValue(str);
+  findAvailableElements(str);
+  
 }
 
-//========================================================================================================
-//  Реализация интерфейса IDisplayed
-//========================================================================================================
 
-void MenuEngine::display (void)
+//--------------------------------------------------------------------------------------------------------
+//  Циклический обработчик. Обрабатывает пришедшие команды. Вызывается раз в 300млс
+//--------------------------------------------------------------------------------------------------------
+void  MenuEngine::cycleHandler(void)   
 {
-  switch(_digit){
-    case 0:{
-  _ledDecoder.decode('A');
-  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
-  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
-  GPIOD->BSRR = _ledDecoder.getAll();
-  GPIOD->BSRR = BIT_8<<16;
-      _digit++;
-      }break;
-    case 1:{
-  _ledDecoder.decode('B');
-  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
-  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
-  GPIOD->BSRR = _ledDecoder.getAll();
-  GPIOD->BSRR = BIT_9<<16;
-      _digit++;
-      }break;
-    case 2:{
-  _ledDecoder.decode('C');
-  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
-  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
-  GPIOD->BSRR = _ledDecoder.getAll();
-  GPIOD->BSRR = BIT_10<<16;
-      _digit++;
-      }break;
-    case 3:{
-  _ledDecoder.decode('D');
-  GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
-  GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
-  GPIOD->BSRR = _ledDecoder.getAll();
-  GPIOD->BSRR = BIT_12<<16;
-      _digit =0;
-      }break;
-    default:  _digit =0; break;
-
-  
-  }
-    
+  //  Обработка команд, пришедших по интерфейсу IControlCommands
+  if (_commandsBits.rcPlus)  { menuMoveDown();      _commandsBits.rcPlus  =0; }
+  if (_commandsBits.rcMinus) { menuMoveUp();        _commandsBits.rcMinus =0; }
+  if (_commandsBits.rcDown)  { menuMoveBackward();  _commandsBits.rcDown  =0; }
+  if (_commandsBits.rcRight) { menuMoveForward();   _commandsBits.rcRight =0; }
 
 
+//  menuEngine.setMenuValue("A");
+  menuEngine.findAvailableElements(menuEngine.getMenuValue());  // Производит поиск доступных элементов меню на данном уровне меню
 
-  
-  printf("Digit = %d\n", _digit);
-  
+  _display->setString((getAvailableElement(getIm()))->getMenu());
 }

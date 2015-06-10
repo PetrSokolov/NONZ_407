@@ -8,14 +8,35 @@
 // 	-----|-------------|----------------|----------------------------------------------
 //#####################################################################################
 
+#ifndef IDISPLAYED_HPP
+#define IDISPLAYED_HPP
+
+#include "stdint.h"
+
+#ifdef __cplusplus
+ extern "C" {
+#endif 
+
+using namespace std;
+   
+namespace src{	    
 
 //=====================================================================================
 //  Интерфейс работы с дисплеем.
 //  Это свойство наследует и реализует класс, где требуется отображение
 //=====================================================================================
-class IDisplayed{
+class IDisplay{
   public:
-    void display (void);
-    void displayOff (void);
+    virtual void setString (char* string) =0;
+    virtual void display (void) =0;
+    virtual void displayOff (void) =0;
 };
+
+}	// namespace src
+
+
+#ifdef __cplusplus
+}
+#endif
+#endif
 

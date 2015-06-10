@@ -16,7 +16,7 @@
 #include <vector>
 #include <map>
 
-#include "__DisplayLedDecoder.hpp"
+#include "__Editor.hpp"
 #include "..\_Interfaces\__IMenuItem.hpp"
 #include "..\_Interfaces\__IDisplayed.hpp"
 #include "..\_Interfaces\__IControlCommands.hpp"
@@ -36,24 +36,26 @@ namespace src{
   //  Осуществляет навингацию по объектам IMenuItem
   //  Агрегирует объект, содержащий карты параметров. (Потом убрать)
   //===========================================================================================
-  class MenuEngine : public IControlCommands, public IDisplayed{
+
+  class MenuEngine : public IControlCommands/*, public IDisplay*/{
 	public:
-    // Конструктор без параметров
-    MenuEngine()  {}
+    // Конструктор
+    MenuEngine(IDisplay* display);
 
     //  Методы интерфейса IControlCommands
-    virtual inline void rcPlus(void)  { printf("MenuEngine PLUS PDU handler\n"); }
-    virtual inline void rcMinus(void) { printf("MenuEngine MINUS PDU handler\n"); }
-    virtual inline void rcEnter(void) { printf("MenuEngine ENTER PDU handler\n"); }
-    virtual inline void rcClear(void) { printf("MenuEngine CLEAR PDU handler\n");}
-    virtual inline void rcOpen(void)  { printf("MenuEngine OPEN PDU handler\n"); }
-    virtual inline void rcClose(void) { printf("MenuEngine CLOSE PDU handler\n"); }
-    virtual inline void rcDown(void)  { printf("MenuEngine DOWN PDU handler\n"); }
-    virtual inline void rcRight(void) { printf("MenuEngine RIGHT PDU handler\n"); }
+    virtual inline void rcPlus(void)  { _commandsBits.rcPlus =1; /*printf("MenuEngine PLUS PDU handler\n");*/ }
+    virtual inline void rcMinus(void) { _commandsBits.rcMinus =1; /* printf("MenuEngine MINUS PDU handler\n");*/ }
+    virtual inline void rcEnter(void) { _commandsBits.rcEnter =1; /* printf("MenuEngine ENTER PDU handler\n");*/ }
+    virtual inline void rcClear(void) { _commandsBits.rcClear =1; /* printf("MenuEngine CLEAR PDU handler\n");*/}
+    virtual inline void rcOpen(void)  { _commandsBits.rcOpen =1; /* printf("MenuEngine OPEN PDU handler\n");*/ }
+    virtual inline void rcClose(void) { _commandsBits.rcClose =1; /* printf("MenuEngine CLOSE PDU handler\n");*/ }
+    virtual inline void rcDown(void)  { _commandsBits.rcDown =1; /* printf("MenuEngine DOWN PDU handler\n");*/ }
+    virtual inline void rcRight(void) { _commandsBits.rcRight =1; /* printf("MenuEngine RIGHT PDU handler\n");*/ }
 
-    //  Методы интерфейса IDisplayed
-    void display (void);
-    void displayOff (void);
+    //  Методы интерфейса IDisplay
+//    void setString (char* string);
+//    void display (void);
+//    void displayOff (void);
 
     //  Методы класса
     //  Методы работы с элементами меню
@@ -63,7 +65,7 @@ namespace src{
     uint16_t      getCountOfElements(void);            // Возвращает общее количество элементов
     uint16_t      getCountOfAvailableElements(void);   // Возвращает количество элементов на данном уровне
     IMenuItem*     getAvailableElement(uint16_t index);// Возвращает указатель на элемент меню на данном уровне. index[0..getCountOfAvailableElements]
-    inline void   setMenuValue(char* m) { _m = m; }    // Устанавливает текущий уровень (сигнатуру) меню
+    inline void   setMenuValue(char* m) { strncpy(_m, m, sizeof(_m));  setIm(0); }    // Устанавливает текущий уровень (сигнатуру) меню
     inline char*  getMenuValue(void)    { return _m; } // Возвращает текущий уровень (сигнатуру) меню
 
     // Методы навигации по элементам меню
@@ -73,14 +75,26 @@ namespace src{
            void     menuMoveUp (void);
            void     menuMoveForward (void);
            void     menuMoveBackward (void);
+    
+           void     cycleHandler(void);               //  Циклический обработчик. Обрабатывает пришедшие команды. Вызывается раз в 300млс
 
 	protected:
-    vector<IMenuItem*>  _availableElements;           //  Список доступных элементов меню. На текущем уровне.
-    vector<IMenuItem*>  _menuIdVector;                //  Вектор, содержащий все элементы меню
-		char*               _m;	                          //  Текущее состояние (уровень) меню
-		uint16_t            _im;                   	      //  Индекс листига текущего меню
-    LedDecoder          _ledDecoder;                  //  Декодер в семисегментный индиктор
-    uint8_t             _digit;                       //  Номер отображаемого символа
+    vector<IMenuItem*>  _availableElements;      //  Список доступных элементов меню. На текущем уровне.
+    vector<IMenuItem*>  _menuIdVector;           //  Вектор, содержащий все элементы меню
+	  char                _m[16];	                 //  Текущее состояние (уровень) меню
+	  uint16_t            _im;                     //  Индекс листига текущего меню
+    IDisplay*           _display;                //  Агрегация объекта, отображающего на дисплее
+    Editor              _editor;                 //  Редактор объекта IVariable
+    struct{                                      //  Команды, пришедшие по интерфейсу IControlCommands      
+        uint16_t  rcPlus   :1;
+        uint16_t  rcMinus  :1;
+        uint16_t  rcEnter  :1;
+        uint16_t  rcClear  :1;
+        uint16_t  rcOpen   :1;
+        uint16_t  rcClose  :1;
+        uint16_t  rcDown   :1;
+        uint16_t  rcRight  :1;
+	  }_commandsBits;
 };
 
 }	// namespace src

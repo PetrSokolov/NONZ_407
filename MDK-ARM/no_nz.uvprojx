@@ -599,11 +599,6 @@
           <GroupName>Menu Items</GroupName>
           <Files>
             <File>
-              <FileName>Display4Digit.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\_Menu_Items\Display4Digit.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Engine.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\_Menu_Items\Engine.cpp</FilePath>
@@ -617,6 +612,21 @@
               <FileName>MainMenu.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\_Menu_Items\MainMenu.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DisplayLedDecoder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_Menu_Items\DisplayLedDecoder.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DisplayLed4Digit.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_Menu_Items\DisplayLed4Digit.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Editor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_Menu_Items\Editor.cpp</FilePath>
             </File>
           </Files>
         </Group>

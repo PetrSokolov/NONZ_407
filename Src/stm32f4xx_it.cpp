@@ -143,8 +143,10 @@ void DMA1_Stream4_IRQHandler(void)
 void DMA2_Stream4_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream4_IRQn 0 */
-  // Таймер 100 млс
+  // Таймеры
+  Timer5mls++;
   Timer100mls++;
+  Timer333mls++;
   rc.rcDecoder.timerHandler(60);
 
   uDC.putSample(adc3.getBufer()[0]);
