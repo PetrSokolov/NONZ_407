@@ -40,7 +40,7 @@ namespace src{
   class MenuEngine : public IControlCommands/*, public IDisplay*/{
 	public:
     // Конструктор
-    MenuEngine(IDisplay* display);
+//    MenuEngine(IDisplay* display);
 
     //  Методы интерфейса IControlCommands
     virtual inline void rcPlus(void)  { _commandsBits.rcPlus =1; /*printf("MenuEngine PLUS PDU handler\n");*/ }
@@ -83,7 +83,6 @@ namespace src{
     vector<IMenuItem*>  _menuIdVector;           //  Вектор, содержащий все элементы меню
 	  char                _m[16];	                 //  Текущее состояние (уровень) меню
 	  uint16_t            _im;                     //  Индекс листига текущего меню
-    IDisplay*           _display;                //  Агрегация объекта, отображающего на дисплее
     Editor              _editor;                 //  Редактор объекта IVariable
     struct{                                      //  Команды, пришедшие по интерфейсу IControlCommands      
         uint16_t  rcPlus   :1;

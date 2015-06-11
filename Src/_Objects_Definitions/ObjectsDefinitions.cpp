@@ -30,16 +30,16 @@ volatile uint16_t Timer5mls=0, Timer100mls=0, Timer333mls=0;
   //  Датчик напряжения на шине постоянного тока. Напряжение  и ток на заряжаемой батарее
   AnalogRmsSensor uDC(60e-6, 0.01), uCharge(60e-6, 0.01), iCharge(20e-6, 0.001);
   
-  //  Обработчик отображения на индикаторе. Реализует интерфейс IDisplay
-  DisplayLed4Digit displayLed4Digit;
-  
   //  Менеджер меню
   MainMenu mainMenu;
   
-  //  Движок меню. Агрегирует по интерфейсу IDisplay объект, отвечающий за отображение.
-  MenuEngine menuEngine (&displayLed4Digit);
+  //  Движок меню.
+  MenuEngine menuEngine;
 
-  // ПДУ
+//  Обработчик отображения на индикаторе. Агрегирует по интерфейсу IDisplayed объект, который надо отображать
+  DisplayLed4Digit displayLed4Digit (&menuEngine);
+
+// ПДУ
   Rc rc( &mainMenu );
 
 //  Контейнер настроечных объектов - параметров

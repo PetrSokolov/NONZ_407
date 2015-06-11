@@ -31,12 +31,16 @@ namespace src{
 
 class DisplayLed4Digit : public IDisplay{
   public:
-    //  Методы интерфейса IDisplay
+    //  Конструктор
+    DisplayLed4Digit(IDisplayed* object);
+
+  //  Методы интерфейса IDisplay
     virtual void setString (char* string);
     virtual void display (void);
     virtual void displayOff (void);
 
   private:
+    IDisplayed* _object;                      //  Агрегация объекта, который будет отображаться
     LedDecoder  _ledDecoder;                  //  Декодер в семисегментный индиктор
     uint8_t     _digit;                       //  Номер отображаемого символа
     char        _string[16];                  //  Данные на отображение

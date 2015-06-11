@@ -18,12 +18,12 @@ using namespace src;
 
 
 //  Конструктор
-MenuEngine::MenuEngine(IDisplay* display)
+/*MenuEngine::MenuEngine(IDisplay* display)
   {
     _display = display;
     _editor.setDisplay(display);
   }
-
+*/
 //--------------------------------------------------------------------------------------------------------
 // Метод PutToMenu
 // Положить указатель на объект в вектор, содержащий все элементы меню

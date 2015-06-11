@@ -25,11 +25,13 @@ namespace src{
 //  Интерфейс работы с дисплеем.
 //  Это свойство наследует и реализует класс, где требуется отображение
 //=====================================================================================
-class IDisplay{
+class IDisplayed{
   public:
-    virtual void setString (char* string) =0;
-    virtual void display (void) =0;
-    virtual void displayOff (void) =0;
+//    virtual void setString (char* string) =0;
+//    virtual void display (void) =0;
+//    virtual void displayOff (void) =0;
+    virtual void getString (char& string) =0;
+    virtual void getIm (uint16_t im) =0;
 };
 
 }	// namespace src
