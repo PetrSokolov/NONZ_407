@@ -16,6 +16,7 @@
 
 using namespace src;
 
+int32_t  Editor::editingValue;    // Статическая переменная, используемая при редактировании параметра
 
 //  Конструктор
 /*MenuEngine::MenuEngine(IDisplay* display)
@@ -118,7 +119,9 @@ uint16_t MenuEngine::getCountOfAvailableElements(void)
 //--------------------------------------------------------------------------------------------------------
 IMenuItem*  MenuEngine::getAvailableElement(uint16_t index)
 {
- return _availableElements[index];
+// if (_availableElements.size()){
+  return _availableElements[index];
+// }
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -167,17 +170,31 @@ void  MenuEngine::menuMoveUp (void)
 void  MenuEngine::menuMoveForward (void)
 {
   char str[16];
+  IVariable* var;
   vector<IMenuItem*> menuElements;
   // поиск элементов следующего уровня меню
   // если они есть, то переход.
+  // Если элемент содержится в карте id\IVariable, то переход в редактор
 
-  strncpy(str, (getAvailableElement(getIm()))->getMenu(), sizeof(str)); // В str заносится значение меню, на которй указывает _im
-  
-  findAvailableElements( menuElements, str);  // Поиск элементов меню, являющихся подменю значения str
-  if (menuElements.size()){
-    findAvailableElements(str);
-    setMenuValue(str);
+  // Проверка на переход в редактор
+  var = _containerOfVars->getContent( (getAvailableElement(getIm()))->getId() );
+  if(var){
+   printf("Is Variable\n");
+   _editor.setVariable(var);                     //  Передача редактору объекта типа IVariable
+   _editor.setViewerMode();
   }
+   else{
+     printf("Is NO Variable\n");
+     // Проверка на переход на следующий уровень меню
+     strncpy(str, (getAvailableElement(getIm()))->getMenu(), sizeof(str)); // В str заносится значение меню, на которй указывает _im
+     findAvailableElements( menuElements, str);  // Поиск во временный контейнер элементов меню, являющихся подменю значения str
+     if (menuElements.size()){
+       findAvailableElements(str);               // Поиск в основной контейнер элементов меню, являющихся подменю значения str
+       setMenuValue(str);
+     }
+   }
+  
+  
 }
 
 
@@ -190,17 +207,17 @@ void  MenuEngine::menuMoveBackward (void)
   char str[16];
   char* ptr;
   
-  strncpy(str, getMenuValue(), sizeof(str));
-  ptr = strrchr(str, '.');  // Поиск последней точки
-  if (ptr){                 // Отрезание индекса после точки (B.0.1 -> B.0)
-    strcpy(ptr, "");
-  }
-   else{
-    strcpy(str, "");
-   }
-  setMenuValue(str);
-  findAvailableElements(str);
-  
+     // Переход по меню на 1 уровень вверх
+     strncpy(str, getMenuValue(), sizeof(str));
+     ptr = strrchr(str, '.');  // Поиск последней точки
+     if (ptr){                 // Отрезание индекса после точки (B.0.1 -> B.0) 
+       strcpy(ptr, "");
+     }
+     else{
+       strcpy(str, "");
+     }
+     setMenuValue(str);
+     findAvailableElements(str);
 }
 
 
@@ -210,14 +227,52 @@ void  MenuEngine::menuMoveBackward (void)
 void  MenuEngine::cycleHandler(void)   
 {
   //  Обработка команд, пришедших по интерфейсу IControlCommands
-  if (_commandsBits.rcPlus)  { menuMoveDown();      _commandsBits.rcPlus  =0; }
-  if (_commandsBits.rcMinus) { menuMoveUp();        _commandsBits.rcMinus =0; }
-  if (_commandsBits.rcDown)  { menuMoveBackward();  _commandsBits.rcDown  =0; }
-  if (_commandsBits.rcRight) { menuMoveForward();   _commandsBits.rcRight =0; }
+  //  Режим редактора
+  if(_editor.getViewerMode()){
+    if (_commandsBits.com.rcPlus)  { _editor.rcPlus();  }
+    if (_commandsBits.com.rcMinus) { _editor.rcMinus(); }
+    if (_commandsBits.com.rcDown)  { _editor.rcDown();  }
+    if (_commandsBits.com.rcRight) { _editor.rcRight(); }
+    if (_commandsBits.com.rcEnter) { _editor.rcEnter(); }
+    if (_commandsBits.com.rcClear) { _editor.rcClear(); }
+    if (_commandsBits.com.rcOpen)  { _editor.rcOpen();  }
+    if (_commandsBits.com.rcClose) { _editor.rcClose(); }
+  }
+  //  Режим меню
+   else{
+     if (_commandsBits.com.rcPlus)  { menuMoveDown();     }
+     if (_commandsBits.com.rcMinus) { menuMoveUp();       }
+     if (_commandsBits.com.rcDown)  { menuMoveBackward(); }
+     if (_commandsBits.com.rcRight) { menuMoveForward();  }
+     if (_commandsBits.com.rcEnter) {  }
+     if (_commandsBits.com.rcClear) {  }
+     if (_commandsBits.com.rcOpen)  {  }
+     if (_commandsBits.com.rcClose) {  }
+   }
 
+   _commandsBits.all =0;  //  Все команды отработаны
 
 //  menuEngine.setMenuValue("A");
   menuEngine.findAvailableElements(menuEngine.getMenuValue());  // Производит поиск доступных элементов меню на данном уровне меню
 
-  _display->setString((getAvailableElement(getIm()))->getMenu());
+//  _display->setString((getAvailableElement(getIm()))->getMenu());
+}
+
+//  Методы интерфейса IDisplay
+void MenuEngine::getString (string& str, uint16_t row)
+{
+  if(_editor.getViewerMode()){  // Режим редактора
+    _editor.getString(str, 0);
+  }
+   else{                   //  Режим меню
+    if(getCountOfAvailableElements()){
+      str = (getAvailableElement(getIm()))->getMenu();
+    }
+   }
+}
+
+
+void MenuEngine::getRow (uint16_t& row)
+{
+  row = getIm();
 }

@@ -27,11 +27,11 @@ DisplayLed4Digit::DisplayLed4Digit(IDisplayed* object)
 //-------------------------------------------------------------------------------------
 //  Передача данных на отображение
 //-------------------------------------------------------------------------------------
-void DisplayLed4Digit::setString (char* string)
+/*void DisplayLed4Digit::setString (char* string)
 {
  strncpy(_string, string, 8);
 
-}
+}*/
 
 
 //-------------------------------------------------------------------------------------
@@ -43,24 +43,29 @@ void DisplayLed4Digit::display (void)
   GPIOD->BSRR = (BIT_8|BIT_9|BIT_10|BIT_11|BIT_12);
   GPIOD->BSRR = ((BIT_0|BIT_1|BIT_2|BIT_3|BIT_4|BIT_5|BIT_6|BIT_7) & 0xFF)<<16;
 
-  //  Перезагрузка буфера на отображение производится в начале отображения
+  //  Перезагрузка буфера на отображение (_displayString) производится в начале отображения
   if (_digit == 0){
-    strcpy(_displayBufer, _string);
-    _symbolPointer = _displayBufer;                       // Указатель на отображаемый символ
-    _endPointer = _symbolPointer + strlen(_displayBufer);  // Указатель на конец строки
+   _object->getString(_string, 0);
+   _displayString = _string;
+   _it = _displayString.begin();
+    
+    //    strcpy(_displayBufer, _string);
+//    _symbolPointer = _displayBufer;                       // Указатель на отображаемый символ
+//    _endPointer = _symbolPointer + strlen(_displayBufer);  // Указатель на конец строки
   }
 
   //  По достижении конца строки символы гасятся
-  if (_symbolPointer >= _endPointer){
+  if (_it >= _displayString.end()){
       _ledDecoder.decode(' ');
   }
    else{
-         _ledDecoder.decode(*_symbolPointer++);
-         if (*_symbolPointer == '.'){
-           _ledDecoder.decode(*_symbolPointer++);
+         _ledDecoder.decode(*_it++);
+         if (*_it == '.'){
+           _ledDecoder.decode(*_it++);
          }
    }
 
+//  _ledDecoder.decode(_string[_digit]);
   switch(_digit){
     case 0:{
              GPIOD->BSRR = _ledDecoder.getAll();
@@ -87,6 +92,3 @@ void DisplayLed4Digit::display (void)
 }
 
 
-void DisplayLed4Digit::displayOff (void)
-{
-}

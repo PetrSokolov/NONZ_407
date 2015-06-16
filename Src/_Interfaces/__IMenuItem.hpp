@@ -24,8 +24,8 @@ namespace src{
 //=================================================================================================
 class IMenuItem{
   public:
-            void     putToMenu (IMenuItem* menuItem);   // Положить в меню элемент (объект IMenuItem)
-     inline uint16_t getId     (void);       // Возвращает id параметра
+                    void     putToMenu (IMenuItem* menuItem);   // Положить в меню элемент (объект IMenuItem)
+     virtual inline uint16_t getId     (void) =0;       // Возвращает id параметра
      virtual inline char*    getMenu   (void) =0;     // Возвращает указатель на индекс меню
      inline char*    getText   (void);     // Возвращает указатель на текст меню
      inline uint8_t  getAccess (void);      // Возвращает уровень доступа

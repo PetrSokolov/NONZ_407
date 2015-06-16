@@ -12,6 +12,7 @@
 #define IDISPLAYED_HPP
 
 #include "stdint.h"
+#include "string"
 
 #ifdef __cplusplus
  extern "C" {
@@ -30,8 +31,8 @@ class IDisplayed{
 //    virtual void setString (char* string) =0;
 //    virtual void display (void) =0;
 //    virtual void displayOff (void) =0;
-    virtual void getString (char& string) =0;
-    virtual void getIm (uint16_t im) =0;
+    virtual void getString (string& str, uint16_t row)=0;
+    virtual void getRow (uint16_t& row)=0;
 };
 
 }	// namespace src

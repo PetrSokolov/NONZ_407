@@ -18,8 +18,6 @@ using namespace src;
 using namespace std;
 
 
-uint32_t  Parameter::editingValue;    // Статическая переменная, используемая при редактировании параметра
-
 //=================================================================================================
 //  Класс, содержащий объекты - переменные
 //  В контейнер буду класть объекты - настроечные параметры
@@ -46,6 +44,8 @@ IVariable* ContainerOfVariables::getContent (uint16_t id)
    else{ return (*_i).second; }
 }
     
+
+
 
 //-------------------------------------------------------------------------------------------------
 //  Метод возвращает количество объектов в контейнере
@@ -92,7 +92,7 @@ void GroupParameter::putToMenu (IMenuItem* menuItem)   // Положить в м
 Parameter::Parameter(  uint16_t   id,
                 char*      menu,
                 char*      text,
-                uint8_t    modbusAdr,
+                uint16_t    modbusAdr,
                 uint16_t   value,
                 uint16_t   rw,
                 uint16_t   min,
@@ -137,6 +137,20 @@ void  Parameter::putToVarMap  (IVariable* variable)  // Положить в ка
  containerOfVariables.putContent(variable);
 }
 
+
+// Инкремент параметра  -------------------------------------------------------------------------------------
+/*void Parameter::incValueHandler(uint16_t x, uint8_t power)
+{
+  if(editingValue + x <= getMax() ) {editingValue += x;} else { editingValue = getMin(); }
+}
+
+
+// Декремент параметра  -------------------------------------------------------------------------------------
+void Parameter::decValueHandler(uint16_t x, uint8_t power)
+{
+  if(editingValue - x >= getMin()) {editingValue -= x;} else { editingValue = getMax(); } 
+}
+*/
 
 /*
 //--------------------------------------------------------------------------------------------------------
@@ -346,6 +360,3 @@ ParameterFlt::ParameterFlt(  uint16_t   id,
 //    menuEngine.putToMenu(this);
   }
 
-void DecoratorCalibrated::enterHandler  (void)
-{
-}  

@@ -604,6 +604,11 @@
               <FilePath>..\Src\_Menu_Items\Engine.cpp</FilePath>
             </File>
             <File>
+              <FileName>Editor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_Menu_Items\Editor.cpp</FilePath>
+            </File>
+            <File>
               <FileName>Parameters.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\_Menu_Items\Parameters.cpp</FilePath>
@@ -622,11 +627,6 @@
               <FileName>DisplayLed4Digit.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\_Menu_Items\DisplayLed4Digit.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Editor.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Src\_Menu_Items\Editor.cpp</FilePath>
             </File>
           </Files>
         </Group>

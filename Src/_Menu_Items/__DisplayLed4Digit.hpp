@@ -29,24 +29,22 @@ namespace src{
 //	Класс отображения на 4 символьном индикаторе
 //-------------------------------------------------------------------------------------
 
-class DisplayLed4Digit : public IDisplay{
+class DisplayLed4Digit{
   public:
     //  Конструктор
     DisplayLed4Digit(IDisplayed* object);
-
-  //  Методы интерфейса IDisplay
-    virtual void setString (char* string);
-    virtual void display (void);
-    virtual void displayOff (void);
+    
+    void display (void);
 
   private:
-    IDisplayed* _object;                      //  Агрегация объекта, который будет отображаться
-    LedDecoder  _ledDecoder;                  //  Декодер в семисегментный индиктор
-    uint8_t     _digit;                       //  Номер отображаемого символа
-    char        _string[16];                  //  Данные на отображение
-    char        _displayBufer[16];            //  Данные на отображение
-    char*       _symbolPointer;               //  Указатель на отображаемый символ
-    char*       _endPointer;                  //  Указатель на конец строки
+    IDisplayed*       _object;                      //  Агрегация объекта, который будет отображаться
+    LedDecoder        _ledDecoder;                  //  Декодер в семисегментный индиктор
+    uint8_t           _digit;                       //  Номер отображаемого символа
+    string            _string;                      //  Данные на отображение
+    string            _displayString;               //  Данные на отображение
+//    char*             _symbolPointer;               //  Указатель на отображаемый символ
+//    char*             _endPointer;                  //  Указатель на конец строки
+    string::iterator  _it;                          //  Итератор отображаемой строки
 
 };
 

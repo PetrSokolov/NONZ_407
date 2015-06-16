@@ -33,7 +33,7 @@ class IMbItem1Reg{
     virtual inline uint16_t com3Handler  (void) = 0;           // Возвращает значение на команду 3 (чтение регистра)
     virtual inline void     com6Handler  (void) = 0;           // Возвращает результат на команду 6 (запись регистра)
     virtual inline void     com16Handler (void) = 0;           // Возвращает результат на команду 16 (запись последовательности регистров)
-    virtual inline uint8_t  getAdr 		 (void) = 0;           // Возвращает модбас адрес объекта
+    virtual inline uint16_t  getAdr 		 (void) = 0;           // Возвращает модбас адрес объекта
 //    virtual inline void     setAdr 		 (uint8_t adres) = 0;  // Устанавливает модбас адрес объекта
 };  
 
@@ -44,7 +44,7 @@ class IMbItem1Reg{
 //-------------------------------------------------------------------------------------------------
 class IMbItem2Reg : public IMbItem1Reg{
   public:
-    virtual inline uint8_t  getAdr2 		 (void) = 0;            // Возвращает модбас адрес2 объекта
+    virtual inline uint16_t  getAdr2 		 (void) = 0;            // Возвращает модбас адрес2 объекта
 };  
 
 } //src

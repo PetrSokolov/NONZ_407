@@ -22,21 +22,37 @@ using namespace src;
 void LedDecoder::decode (char symbol)
 {
   switch(symbol){
+    case 'a':
     case 'A': {_segments.all = 0x77; } break;
+    case 'b':
     case 'B': {_segments.all = 0x7C; } break;
+    case 'c':
     case 'C': {_segments.all = 0x39; } break;
+    case 'd':
     case 'D': {_segments.all = 0x5E; } break;
+    case 'e':
     case 'E': {_segments.all = 0x79; } break;
+    case 'f':
     case 'F': {_segments.all = 0x71; } break;
+    case 'g':
     case 'G': {_segments.all = 0x6F; } break;
+    case 'h':
     case 'H': {_segments.all = 0x74; } break;
+    case 'i':
     case 'I': {_segments.all = 0x06; } break;
+    case 'j':
     case 'J': {_segments.all = 0x0E; } break;
+    case 'l':
     case 'L': {_segments.all = 0x38; } break;
+    case 'o':
     case 'O': {_segments.all = 0x3F; } break;
+    case 'p':
     case 'P': {_segments.all = 0x73; } break;
+    case 's':
     case 'S': {_segments.all = 0x6D; } break;
+    case 'u':
     case 'U': {_segments.all = 0x3E; } break;
+    case 'y':
     case 'Y': {_segments.all = 0x6E; } break;
     case '0': {_segments.all = 0x3F; } break;
     case '1': {_segments.all = 0x06; } break;
