@@ -11,6 +11,7 @@
 #include "..\_Menu_Items\__Parameters.hpp"
 #include "..\_Menu_Items\__DisplayLed4Digit.hpp"
 #include "..\_RC\__RC.hpp"
+#include "..\_SPI_Handler\__SPI_Handler.hpp"
 
 
 using namespace src;
@@ -40,7 +41,10 @@ using namespace src;
   // ПДУ
   extern Rc rc;
 
-   //  Контейнер настроечных объектов - параметров
+  //  Обработчик SPI
+  extern SpiHandler spi1Handler, Spi2Handler;
+
+  //  Контейнер настроечных объектов - параметров
   extern ContainerOfVariables containerOfVariables;
 
   // Настроечные параметры ШИМ

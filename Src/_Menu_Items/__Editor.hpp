@@ -21,9 +21,6 @@
 #include "..\_Interfaces\__IControlCommands.hpp"
 
 
-#ifdef __cplusplus
- extern "C" {
-#endif 
 
 using namespace std;
    
@@ -79,9 +76,6 @@ class Editor : public IControlCommands, public IDisplayed{
   
 }	// namespace src
 
-#ifdef __cplusplus
-}
-#endif
 #endif
 
 

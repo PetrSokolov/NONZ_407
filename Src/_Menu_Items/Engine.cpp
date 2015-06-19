@@ -171,6 +171,7 @@ void  MenuEngine::menuMoveForward (void)
 {
   char str[16];
   IVariable* var;
+  IMenuItem* menuItem_;
   vector<IMenuItem*> menuElements;
   // поиск элементов следующего уровня меню
   // если они есть, то переход.
@@ -178,7 +179,7 @@ void  MenuEngine::menuMoveForward (void)
 
   // Проверка на переход в редактор
   var = _containerOfVars->getContent( (getAvailableElement(getIm()))->getId() );
-  if(var){
+  if(var != NULL){
    printf("Is Variable\n");
    _editor.setVariable(var);                     //  Передача редактору объекта типа IVariable
    _editor.setViewerMode();
@@ -186,11 +187,14 @@ void  MenuEngine::menuMoveForward (void)
    else{
      printf("Is NO Variable\n");
      // Проверка на переход на следующий уровень меню
-     strncpy(str, (getAvailableElement(getIm()))->getMenu(), sizeof(str)); // В str заносится значение меню, на которй указывает _im
-     findAvailableElements( menuElements, str);  // Поиск во временный контейнер элементов меню, являющихся подменю значения str
-     if (menuElements.size()){
-       findAvailableElements(str);               // Поиск в основной контейнер элементов меню, являющихся подменю значения str
-       setMenuValue(str);
+     menuItem_ = getAvailableElement(getIm());
+     if(menuItem_ != NULL){
+       strncpy(str, menuItem_->getMenu(), sizeof(str)); // В str заносится значение меню, на которй указывает _im
+       findAvailableElements( menuElements, str);  // Поиск во временный контейнер элементов меню, являющихся подменю значения str
+       if (menuElements.size()){
+         findAvailableElements(str);               // Поиск в основной контейнер элементов меню, являющихся подменю значения str
+         setMenuValue(str);
+       }
      }
    }
   

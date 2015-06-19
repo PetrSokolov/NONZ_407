@@ -72,9 +72,11 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN 0 */
 
-uint16_t adc1_bufer[5], adc3_bufer[3];
+uint16_t adc1_bufer[32], adc3_bufer[32];
 
 /* USER CODE END 0 */
+extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef hspi2;
 
 int main(void)
 {
@@ -136,9 +138,10 @@ int main(void)
   __HAL_DMA_DISABLE_IT(hadc1.DMA_Handle, DMA_IT_HT);  
   __HAL_DMA_DISABLE_IT(hadc3.DMA_Handle, DMA_IT_HT);  
 
-   // Enable the Peripheral 
+  // Enable the Peripheral 
   __HAL_DMA_ENABLE(hadc1.DMA_Handle);
   __HAL_DMA_ENABLE(hadc3.DMA_Handle);
+
 
   /* USER CODE END 2 */
 

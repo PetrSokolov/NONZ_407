@@ -102,10 +102,10 @@ class Parameter : public IMenuItem, public IMbItem1Reg, public IVariable {
                 char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
-                uint16_t   value,
+                int16_t    value,
                 uint16_t   rw,
-                uint16_t   min,
-                uint16_t   max,
+                int16_t    min,
+                int16_t    max,
                 uint16_t   access,
                 uint16_t   def
              );
@@ -133,11 +133,11 @@ class Parameter : public IMenuItem, public IMbItem1Reg, public IVariable {
   // Методы интерфейса IVariable  ----------------------------------------------------------------------------
                     void     putToVarMap  (IVariable* variable);  // Положить в карту элемент (объект IVariable)
     // Методы, возвращающие значение параметра
-     virtual inline int32_t getValue  (void)            { return _value; }   // Возвращает значение параметра
+     virtual inline int32_t  getValue  (void)            { return _value; }   // Возвращает значение параметра
      virtual inline void     setValue  (int32_t value)  { _value = value; }  // Устанавливает значение параметра
     // Методы, возвращающие атрибуты
-     virtual inline int32_t getMin    (void) { return _min; }        // Возвращает минимальное значение параметра
-     virtual inline int32_t getMax    (void) { return _max; }        // Возвращает максимальное значение параметра
+     virtual inline int32_t  getMin    (void) { return _min; }        // Возвращает минимальное значение параметра
+     virtual inline int32_t  getMax    (void) { return _max; }        // Возвращает максимальное значение параметра
      virtual inline uint16_t getVarId  (void) { return _id; }         // Возвращает id параметра
      virtual inline uint8_t  getRw 	   (void) { return _flags.rw; }   // Возвращает разрешение на запись параметра
     // Методы, используемые при редактировании параметра через меню
@@ -162,7 +162,7 @@ class Parameter : public IMenuItem, public IMbItem1Reg, public IVariable {
   // Данные, используемые интерфейсом IVariable
     int16_t   _value;     // Значение параметра
     int16_t   _min;       // Минимальное значение
-    uint16_t  _max;       // Максимальное значение
+    int16_t   _max;       // Максимальное значение
     uint16_t  _def;       // Значение по умолчанию
 
   //  Прочие данные
@@ -381,10 +381,10 @@ class ParameterFlt : public Parameter{
                 char*      menu,
                 char*      text,
                 uint16_t   modbusAdr,
-                uint16_t   value,
+                int16_t    value,
                 uint16_t   rw,
-                uint16_t   min,
-                uint16_t   max,
+                int16_t    min,
+                int16_t    max,
                 uint16_t   user,
                 uint16_t   def,
                 int16_t    power
@@ -436,12 +436,12 @@ public:
 
 // Переопределение методов (декорирование)
   // Методы, возвращающие значение параметра
-  virtual inline int32_t getValue   (void)           { return _variable->getValue(); }    // Возвращает значение параметра
+  virtual inline int32_t  getValue  (void)           { return _variable->getValue(); }    // Возвращает значение параметра
   virtual inline void     setValue  (int32_t value) { _variable->setValue  (value); }    // Устанавливает значение параметра
 
   // Методы, возвращающие атрибуты
-  virtual inline int32_t getMin     (void)           { return _variable->getMin(); }      // Возвращает минимальное значение параметра
-  virtual inline int32_t getMax     (void)           { return _variable->getMax(); }      // Возвращает максимальное значение параметра
+  virtual inline int32_t  getMin    (void)           { return _variable->getMin(); }      // Возвращает минимальное значение параметра
+  virtual inline int32_t  getMax    (void)           { return _variable->getMax(); }      // Возвращает максимальное значение параметра
   virtual inline uint16_t getVarId  (void)           { return _variable->getVarId(); }       // Возвращает id параметра
   virtual inline uint8_t  getRw 	  (void)           { return _variable->getRw(); }   // Возвращает разрешение на запись параметра
 

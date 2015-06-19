@@ -73,6 +73,18 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  // Сигналы выбора устройства на шинах SPI
+  /*Configure GPIO pins :  PE0 PE1 PE2 
+                           PE3 PE4 PE5 PE6 
+                           PE7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2 
+                          |GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6 
+                          |GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
   // 7 сегментный Индикатор
   /*Configure GPIO pins : PD8 PD9 PD10 PD11 
                            PD12 PD0 PD1 PD2 

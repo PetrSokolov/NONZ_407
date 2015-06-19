@@ -84,6 +84,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopA1X>0</nStopA1X>
+            <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -361,6 +363,8 @@
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
             <useXO>0</useXO>
+            <v6Lang>0</v6Lang>
+            <v6LangP>0</v6LangP>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER</Define>
@@ -677,6 +681,26 @@
               <FileName>RC_Decoder.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Src\_RC\RC_Decoder.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SPI Handler</GroupName>
+          <Files>
+            <File>
+              <FileName>SPI_Handler.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_SPI_Handler\SPI_Handler.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BMS</GroupName>
+          <Files>
+            <File>
+              <FileName>BMS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Src\_BMS\BMS.cpp</FilePath>
             </File>
           </Files>
         </Group>

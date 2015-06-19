@@ -14,9 +14,9 @@
 #include "stdint.h"
 #include "string"
 
-#ifdef __cplusplus
- extern "C" {
-#endif 
+//#ifdef __cplusplus
+// extern "C" {
+//#endif 
 
 using namespace std;
    
@@ -38,8 +38,8 @@ class IDisplayed{
 }	// namespace src
 
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 #endif
 

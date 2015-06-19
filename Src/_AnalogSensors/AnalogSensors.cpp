@@ -34,7 +34,7 @@ AnalogRmsSensor::AnalogRmsSensor (float ts, float tf)// : AnalogSensor(ts, tf)
 // Установить калибровочный коэффициент
 void AnalogRmsSensor::setCalibration	(uint16_t value)
 {
-	_calibration_value = value;
+	_calibration_value = (float)value;
 	_calibration_value *= 0.0001;
 }
 
@@ -58,7 +58,7 @@ AnalogMeanSensor::AnalogMeanSensor (float ts, float tf)// : AnalogSensor(ts, tf)
 // Установить калибровочный коэффициент
 void AnalogMeanSensor::setCalibration	(uint16_t value)
 {
-	_calibration_value = value;
+	_calibration_value = (float)value;
 	_calibration_value *= 0.0001;
 }
 

@@ -77,7 +77,7 @@ namespace src{
            void     menuMoveUp (void);
            void     menuMoveForward (void);
            void     menuMoveBackward (void);
-    
+
            void     cycleHandler(void);               //  Циклический обработчик. Обрабатывает пришедшие команды. Вызывается раз в 300млс
 
 	private:
