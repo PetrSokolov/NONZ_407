@@ -12,6 +12,7 @@
 #include "..\_Menu_Items\__DisplayLed4Digit.hpp"
 #include "..\_RC\__RC.hpp"
 #include "..\_SPI_Handler\__SPI_Handler.hpp"
+#include "..\_BMS\__BMS.hpp"
 
 
 using namespace src;
@@ -44,13 +45,17 @@ using namespace src;
   //  Обработчик SPI
   extern SpiHandler spi1Handler, Spi2Handler;
 
+  // Модули БМС (0-10)
+  extern Bms bms0, bms6, bms8;
+
+
   //  Контейнер настроечных объектов - параметров
   extern ContainerOfVariables containerOfVariables;
 
   // Настроечные параметры ШИМ
   extern ParameterFlt  pwmDeathTime, pwmValue;
    
-  extern volatile uint16_t Timer5mls, Timer100mls, Timer333mls;
+  extern volatile uint16_t Timer1mls, Timer5mls, Timer100mls, Timer333mls;
    
 #define BIT_0   0x0001
 #define BIT_1   0x0002

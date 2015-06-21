@@ -48,6 +48,10 @@
 using namespace std;
 using namespace src;
 
+extern DMA_HandleTypeDef hdma_spi1_tx;
+extern DMA_HandleTypeDef hdma_spi1_rx;
+extern DMA_HandleTypeDef hdma_spi2_rx;
+extern DMA_HandleTypeDef hdma_spi2_tx;
 
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
@@ -131,7 +135,7 @@ int main(void)
   
   // Отключение ненужного прерывания DMA (отправлена половина данных) - экономия времени
  // Disable the peripheral 
-  __HAL_DMA_DISABLE(hadc1.DMA_Handle);
+/*  __HAL_DMA_DISABLE(hadc1.DMA_Handle);
   __HAL_DMA_DISABLE(hadc3.DMA_Handle);
 
  // Enable the Half transfer complete interrupt 
@@ -142,6 +146,24 @@ int main(void)
   __HAL_DMA_ENABLE(hadc1.DMA_Handle);
   __HAL_DMA_ENABLE(hadc3.DMA_Handle);
 
+
+ // Disable the peripheral 
+  __HAL_DMA_DISABLE(&hdma_spi1_rx);
+  __HAL_DMA_DISABLE(&hdma_spi1_tx);
+  __HAL_DMA_DISABLE(&hdma_spi2_rx);
+  __HAL_DMA_DISABLE(&hdma_spi2_tx);
+
+  // Disable the Half transfer complete interrupt 
+  __HAL_DMA_DISABLE_IT(&hdma_spi1_rx, DMA_IT_HT);  
+  __HAL_DMA_DISABLE_IT(&hdma_spi1_tx, DMA_IT_HT);  
+  __HAL_DMA_DISABLE_IT(&hdma_spi2_rx, DMA_IT_HT);  
+  __HAL_DMA_DISABLE_IT(&hdma_spi2_tx, DMA_IT_HT);  
+
+  // Enable the Peripheral 
+  __HAL_DMA_ENABLE(&hdma_spi1_rx);
+  __HAL_DMA_ENABLE(&hdma_spi1_tx);
+  __HAL_DMA_ENABLE(&hdma_spi2_rx);
+  __HAL_DMA_ENABLE(&hdma_spi2_tx);*/
 
   /* USER CODE END 2 */
 

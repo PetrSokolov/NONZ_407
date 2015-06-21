@@ -17,13 +17,14 @@ namespace src{
 
 class ISpiMessage{
   public:
-    virtual inline uint8_t* getPointerToTransfer();
-    virtual inline uint8_t* getPointerToRecieve();
-    virtual inline uint16_t  getSizeOfTransfer();
-    virtual inline uint16_t  getSizeOfrecieve();
-    virtual inline uint16_t  getCs();
-	  virtual void             transferComplete();
-	  virtual void             recieveComplete();
+    virtual inline uint8_t* getPointerToTransfer(void) =0;
+    virtual inline uint8_t* getPointerToRecieve(void) =0;
+    virtual inline uint16_t  getSizeOfTransfer(void) =0;
+    virtual inline uint16_t  getSizeOfrecieve(void) =0;
+    virtual inline uint8_t   getCs(void) =0;
+	  virtual        void      transferComplete(void) =0;
+    virtual inline void      addedToQueue(void) =0;
+
 };
 
 } //src

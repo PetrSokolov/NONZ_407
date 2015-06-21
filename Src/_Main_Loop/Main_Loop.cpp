@@ -34,43 +34,38 @@ void MainLoop()
 //------------------------------------------------------------------------------
   menuEngine.setMenuValue("");
  
+//  if (!bms6.getTransferBusy()){
+//    bms6.rdCfg();
+//  }
+     if (!bms6.getTransferBusy()){
+       bms6.stcvad();
+     }
+
+  
 //------------------------------------------------------------------------------
 //  Основной цикл программы
 //------------------------------------------------------------------------------
  while(1){
 
-//  5 mls --------------------------------------------------------------------
+//  1 mls --------------------------------------------------------------------
+   if (Timer1mls >16){
+     Timer1mls =0;
+     spi1Handler.periodicHandler();
+   }
+
+   //  5 mls --------------------------------------------------------------------
    if (Timer5mls >83){
      Timer5mls =0;
      displayLed4Digit.display();
-     spi1Handler.periodicHandler();
+
    }
 
 //  100 mls --------------------------------------------------------------------
    if (Timer100mls >1666){
     Timer100mls =0;
-
-/*##-2- Start the Full Duplex Communication process ########################*/  
-  /* While the SPI in TransmitReceive process, user can transmit data through 
-     "aTxBuffer" buffer & receive data through "aRxBuffer" */
-//  if(HAL_SPI_TransmitReceive_DMA(&hspi1, aTxBuffer, aRxBuffer, 10) != HAL_OK)
-//  {
-    /* Transfer error in transmission process */
-   // Error_Handler();
-//  }
-
-
-  /*##-3- Wait for the end of the transfer ###################################*/  
-  /*  Before starting a new communication transfer, you need to check the current   
-      state of the peripheral; if it’s busy you need to wait for the end of current
-      transfer before starting a new one.
-      For simplicity reasons, this example is just waiting till the end of the 
-      transfer, but application may perform other tasks while transfer operation
-      is ongoing. */  
-//  while (HAL_SPI_GetState(&hspi1) != HAL_SPI_STATE_READY)
-//  {
-//  } 
-
+     if (!bms6.getTransferBusy()){
+       bms6.rdCv();
+     }
    }
 
 //  333 mls --------------------------------------------------------------------
@@ -78,6 +73,10 @@ void MainLoop()
      Timer333mls =0;
      rc.cycleHandler();
      menuEngine.cycleHandler();
+//     if (!bms6.getTransferBusy()){
+//       bms6.stcvad();
+//     }
+       
    }
   
 //------------------------------------------------------------------------------

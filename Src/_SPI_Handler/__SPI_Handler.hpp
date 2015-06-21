@@ -35,17 +35,21 @@ class SpiHandler : public ISpiDmaExchange{
         _hspi = hspi; 
         _currentMessage = NULL;
       }
-    virtual void sendMessage    (ISpiMessage* message);
-    virtual void recieveMessage (ISpiMessage* message);
+    //  Методы интерфейса ISpiDmaExchange
+    virtual void transferMessage    (ISpiMessage* message);
+//    virtual void recieveMessage (ISpiMessage* message);
   
+    //  Методы класса
     inline void setTxComplete (void) { _txComplete =1; }
     inline void setRxComplete (void) { _rxComplete =1; }
     void periodicHandler (void);
 
   private:
-    void sendMessageCompleted    (ISpiMessage* message);
-    void recieveMessageCompleted (ISpiMessage* message);
-    uint8_t getReady (void);    //  Возвращает занятость SPI
+//    void sendMessageCompleted    (ISpiMessage* message);
+//    void recieveMessageCompleted (ISpiMessage* message);
+    void chipSelect (uint8_t cs);                         // Выбрать устройство на SPI шине
+    void chipDeselect (void);                             // Отменить выбор устройства на SPI шине
+    uint8_t getReady (void);                              //  Возвращает занятость SPI
 
     list<ISpiMessage*> _txMessages;      //  Список сообщений на передачу
     list<ISpiMessage*> _rxMessages;      //  Список сообщений на прием

@@ -19,8 +19,8 @@ namespace src{
 
 class ISpiDmaExchange{
   public:
-    virtual void sendMessage    (ISpiMessage* message) =0;
-    virtual void recieveMessage (ISpiMessage* message) =0;	
+    virtual void transferMessage (ISpiMessage* message) =0;
+//    virtual void recieveMessage  (ISpiMessage* message) =0;	
 };
 
 } //src

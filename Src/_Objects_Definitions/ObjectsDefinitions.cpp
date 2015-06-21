@@ -17,7 +17,7 @@ using namespace src;
 //---------------------------------------------------------------------------------------------------------
 extern SPI_HandleTypeDef hspi1, hspi2;
 
-volatile uint16_t Timer5mls=0, Timer100mls=0, Timer333mls=0;
+volatile uint16_t Timer1mls=0, Timer5mls=0, Timer100mls=0, Timer333mls=0;
 
 
 //---------------------------------------------------------------------------------------------------------
@@ -32,23 +32,26 @@ volatile uint16_t Timer5mls=0, Timer100mls=0, Timer333mls=0;
   //  Датчик напряжения на шине постоянного тока. Напряжение  и ток на заряжаемой батарее
   AnalogRmsSensor uDC(60e-6, 0.01), uCharge(60e-6, 0.01), iCharge(20e-6, 0.001);
   
-//  Контейнер настроечных объектов - параметров
+  //  Контейнер настроечных объектов - параметров
   ContainerOfVariables containerOfVariables;
 
-//  Менеджер меню
+  //  Менеджер меню
   MainMenu mainMenu;
   
   //  Движок меню.
   MenuEngine menuEngine(&containerOfVariables);
 
-//  Обработчик отображения на индикаторе. Агрегирует по интерфейсу IDisplayed объект, который надо отображать
+  //  Обработчик отображения на индикаторе. Агрегирует по интерфейсу IDisplayed объект, который надо отображать
   DisplayLed4Digit displayLed4Digit (&menuEngine);
 
-// ПДУ
+  // ПДУ
   Rc rc( &mainMenu );
 
-//  Обработчик SPI
+  //  Обработчик SPI
   SpiHandler spi1Handler(&hspi1), Spi2Handler(&hspi2);
+  
+  // Модули БМС (0-10)
+  Bms bms0(0, 0, &spi1Handler), bms6(6, 0, &spi1Handler), bms8(8, 0, &spi1Handler);
 
 //---------------------------------------------------------------------------------------------------------
 //  Создание глобальных объектов-параметров

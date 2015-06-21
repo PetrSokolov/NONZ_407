@@ -87,7 +87,13 @@ void SysTick_Handler(void)
 void DMA2_Stream0_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream0_IRQn 0 */
-  spi1Handler.setRxComplete();
+   /* Transfer Complete Interrupt management ***********************************/
+   if(__HAL_DMA_GET_FLAG(&hdma_spi1_rx, __HAL_DMA_GET_TC_FLAG_INDEX(&hdma_spi1_rx)) != RESET)
+   {
+     if(__HAL_DMA_GET_IT_SOURCE(&hdma_spi1_rx, DMA_IT_TC) != RESET){
+       spi1Handler.setRxComplete();
+     }
+   }
   /* USER CODE END DMA2_Stream0_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_spi1_rx);
   /* USER CODE BEGIN DMA2_Stream0_IRQn 1 */
@@ -144,6 +150,7 @@ void DMA2_Stream4_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream4_IRQn 0 */
   // Таймеры
+  Timer1mls++;
   Timer5mls++;
   Timer100mls++;
   Timer333mls++;
@@ -182,7 +189,7 @@ void DMA2_Stream1_IRQHandler(void)
 void DMA2_Stream3_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream3_IRQn 0 */
-
+  spi1Handler.setTxComplete();
   /* USER CODE END DMA2_Stream3_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_spi1_tx);
   /* USER CODE BEGIN DMA2_Stream3_IRQn 1 */
