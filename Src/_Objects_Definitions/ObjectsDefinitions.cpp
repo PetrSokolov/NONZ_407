@@ -48,10 +48,13 @@ volatile uint16_t Timer1mls=0, Timer5mls=0, Timer100mls=0, Timer333mls=0;
   Rc rc( &mainMenu );
 
   //  Обработчик SPI
-  SpiHandler spi1Handler(&hspi1), Spi2Handler(&hspi2);
+  SpiHandler spi1Handler(&hspi1, 84000), spi2Handler(&hspi2, 42000);
   
   // Модули БМС (0-10)
-  Bms bms0(0, 0, &spi1Handler), bms6(6, 0, &spi1Handler), bms8(8, 0, &spi1Handler);
+  Bms bms0(0, 0, 700, &spi1Handler), bms6(6, 0, 700, &spi1Handler), bms8(8, 0, 700, &spi1Handler);
+  
+  // SPI порты на микроконтроллере PIC
+  SpiPortPic spiPortPic6(6, 700, &spi2Handler, 0xFF, 0xFF, 0, 0);
 
 //---------------------------------------------------------------------------------------------------------
 //  Создание глобальных объектов-параметров

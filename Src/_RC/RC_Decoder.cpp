@@ -11,6 +11,7 @@
 #include "__RC_Decoder.hpp"
 #include "stdint.h"
 #include "..\_Objects_Definitions\__ObjectsDefinitions.hpp"
+#include "..\_Objects_Definitions\__ConstantsDefinitions.hpp"
 #include "..\_Interfaces\__IControlCommands.hpp"
 
 

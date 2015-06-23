@@ -30,9 +30,10 @@ namespace src{
 //-------------------------------------------------------------------------------------
 class SpiHandler : public ISpiDmaExchange{
   public:
-    SpiHandler (SPI_HandleTypeDef* hspi)
+    SpiHandler (SPI_HandleTypeDef* hspi, uint32_t spiClkFrequency)
       {
         _hspi = hspi; 
+        _spiClkFrequency = spiClkFrequency;
         _currentMessage = NULL;
       }
     //  Методы интерфейса ISpiDmaExchange
@@ -50,12 +51,14 @@ class SpiHandler : public ISpiDmaExchange{
     void chipSelect (uint8_t cs);                         // Выбрать устройство на SPI шине
     void chipDeselect (void);                             // Отменить выбор устройства на SPI шине
     uint8_t getReady (void);                              //  Возвращает занятость SPI
+    void setSpiFrequency (ISpiMessage* message);          //  Устанавливает делитель, соответствующий заданной скорости передачи
 
     list<ISpiMessage*> _txMessages;      //  Список сообщений на передачу
     list<ISpiMessage*> _rxMessages;      //  Список сообщений на прием
     uint8_t            _txComplete :1;   //  Передача завершена, необходимо удалить соответствующий объект из очереди
     uint8_t            _rxComplete :1;   //  Прием завершен, необходимо удалить соответствующий объект из очереди
     SPI_HandleTypeDef* _hspi;            //  Указатель на структуру HAL SPI
+    uint32_t           _spiClkFrequency; //  Частота синхронизации SPI (APB1, APB2)
     ISpiMessage*       _currentMessage;  //  Текущее сообщение
 
 };

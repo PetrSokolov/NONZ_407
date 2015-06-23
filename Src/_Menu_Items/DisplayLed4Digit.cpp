@@ -11,6 +11,7 @@
 #include "stm32f4xx_hal.h"
 #include "__DisplayLed4Digit.hpp"
 #include "..\_Objects_Definitions\__ObjectsDefinitions.hpp"
+#include "..\_Objects_Definitions\__ConstantsDefinitions.hpp"
 
 using namespace src;
 

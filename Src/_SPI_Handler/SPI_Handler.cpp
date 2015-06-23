@@ -10,7 +10,7 @@
 
 #include "stdint.h"
 #include "__SPI_Handler.hpp"
-#include "..\_Objects_Definitions\__ObjectsDefinitions.hpp"
+#include "..\_Objects_Definitions\__ConstantsDefinitions.hpp"
 
 
 using namespace src;
@@ -73,10 +73,9 @@ void SpiHandler::periodicHandler (void)
 {
 // Потом убрать эти промежуточные данные
 //  ISpiMessage* message_;
-  uint16_t  sizeOfTransfer_, sizeOfrecieve_;
+  uint16_t  sizeOfTransfer_;
   uint8_t* pointerToTransfer_;
   uint8_t* pointerToRecieve_;
-  uint16_t txempty_, rxempty_, spiReady_;
   
   // Удаление из очереди отработанной посылки
   if(_rxComplete){
@@ -87,18 +86,36 @@ void SpiHandler::periodicHandler (void)
   }
 //  if(_txComplete) { _rxMessages.pop_front();  chipDeselect(); _txComplete =0; }
   
-  spiReady_ = getReady();
-  txempty_ = _txMessages.empty();
-  rxempty_ = _rxMessages.empty();
-
   //  Если очередь не пустая и SPI свободен, заряжаю следующую посылку
   if ( !_txMessages.empty() && getReady() ){
+
     _currentMessage = _txMessages.front();
+    setSpiFrequency(_currentMessage);
     sizeOfTransfer_    = _currentMessage->getSizeOfTransfer();
     pointerToTransfer_ = _currentMessage->getPointerToTransfer();
     pointerToRecieve_ = _currentMessage->getPointerToRecieve();
     chipSelect(_currentMessage->getCs());
     HAL_SPI_TransmitReceive_DMA(_hspi, pointerToTransfer_, pointerToRecieve_, sizeOfTransfer_);
   }
+}
+
+
+//--------------------------------------------------------------------------------------------------------
+void SpiHandler::setSpiFrequency(ISpiMessage* message){
+
+ uint16_t tmp_, br_;
+ tmp_ = _spiClkFrequency/(message->getSpiFrequency());
+    
+ //  Устанавливается максимальный делитель, затем подбирается подходящий, если скорость соответствует диапазону делителя
+ br_ = SPI_CR1_BR_2|SPI_CR1_BR_1|SPI_CR1_BR_0;
+ if(tmp_<= 128) { br_ = SPI_CR1_BR_2|SPI_CR1_BR_1             ; }
+ if(tmp_<=  64) { br_ = SPI_CR1_BR_2|             SPI_CR1_BR_0; }
+ if(tmp_<=  32) { br_ = SPI_CR1_BR_2                          ; }
+ if(tmp_<=  16) { br_ =              SPI_CR1_BR_1|SPI_CR1_BR_0; }
+ if(tmp_<=   8) { br_ =              SPI_CR1_BR_1             ; }
+ if(tmp_<=   4) { br_ =                           SPI_CR1_BR_0; }
+ if(tmp_<=   2) { br_ = 0; }
+ _hspi->Instance->CR1 &= ~SPI_CR1_BR;
+ _hspi->Instance->CR1 |= br_;
 }
 

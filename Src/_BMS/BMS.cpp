@@ -26,14 +26,14 @@ using namespace src;
 void Bms::wrCfg (void)
 {
   //--------------
-  _configRegistersWr[0] = 0;
-  _configRegistersWr[1] = 0;
-  _configRegistersWr[2] = 0;
+  _configRegistersWr[0] = 0x83;
+  _configRegistersWr[1] = 0x02;//ff; // no discharge all cell's
+  _configRegistersWr[2] = 0x00;//0f;
   _configRegistersWr[3] = 0;
-  _configRegistersWr[4] = 0;
-  _configRegistersWr[5] = 10;
+  _configRegistersWr[4] = 48;
+  _configRegistersWr[5] = 52;
   //--------------
-  _transferBufer[0] = 0x80 + getChipAdres();
+  _transferBufer[0] = 0x80 + _chipAdres;
   _transferBufer[1] = pec8_calc(1,_transferBufer);
   _transferBufer[2] = 0x01;
   _transferBufer[3] = 0xC7;
@@ -58,7 +58,7 @@ void Bms::wrCfg (void)
 //  Read Configuration Register Group
 void Bms::rdCfg (void)
 {
-  _transferBufer[0] = 0x80 + getChipAdres();
+  _transferBufer[0] = 0x80 + _chipAdres;
   _transferBufer[1] = pec8_calc(1,_transferBufer);
   _transferBufer[2] = RDCFG;
   _transferBufer[3] = 0xCE;
@@ -88,7 +88,7 @@ void Bms::stcvad()
 //  Read All Cell Voltage Group
 void Bms::rdCv (void)
 {
-  _transferBufer[0] = 0x80 + getChipAdres();
+  _transferBufer[0] = 0x80 + _chipAdres;
   _transferBufer[1] = pec8_calc(1,_transferBufer);
   _transferBufer[2] = RDCV;
   _transferBufer[3] = 0xDC;
@@ -155,7 +155,7 @@ void  Bms::transferComplete(void)
    if (received_pec_ == data_pec_)
     {
       // Обработка принятых данных
-      if (_transferBufer[0] == 0x80 + getChipAdres() ){
+      if (_transferBufer[0] == 0x80 + _chipAdres ){
         com_ = _transferBufer[2];
       }
       else { com_ = _transferBufer[0]; }
